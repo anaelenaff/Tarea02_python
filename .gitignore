@@ -1,0 +1,18 @@
+# Entorno conda local
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# JupyterLab
+.ipynb_checkpints/
+
+# Datos pesados 
+logs/*.log
+data/raw/*
+results/*
+
+# Mantener la estructura de carpetas 
+!data/raw/.gitkeep
+!results/.gitkeep
