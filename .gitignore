@@ -6,13 +6,14 @@ __pycache__/
 *.pyc
 
 # JupyterLab
-.ipynb_checkpints/
+.ipynb_checkpoints/
 
 # Datos pesados 
-logs/*.log
+logs/*
 data/raw/*
 results/*
 
-# Mantener la estructura de carpetas 
+# Mantener la estructura de carpetas
 !data/raw/.gitkeep
 !results/.gitkeep
+!logs/.gitkeep
