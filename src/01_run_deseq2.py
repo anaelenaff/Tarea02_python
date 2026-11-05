@@ -243,10 +243,10 @@ def enrichment(genes, library, output_name):
     """
     Función para realizar el enriquecimiento funcional de genes.
     Recibe una lista de genes, el nombre de una librería concreta 
-    de Enrich y el nombre de salida (ambos entre comillas); para 
+    de Enrichr y el nombre de salida (ambos entre comillas); para 
     generar los archivos: <output_name>.tsv y plot_<output_name>.png.
     """
-    enr = gp.enrich(
+    enr = gp.enrichr(
         gene_list = genes,
         gene_sets = library,
         background = genes_de, # El universo queda fijo => Genes diferencialmente expresados.
@@ -254,14 +254,15 @@ def enrichment(genes, library, output_name):
         cutoff = alpha
     )
 
-    enr.res2d.to_csv(f"results/{output_name}.tsv", sep= "\t", index = False)
+    table = enr.res2d[enr.res2d["Adjusted P-value"] < alpha] # Términos significativos
+    table.to_csv(f"results/{output_name}.tsv", sep= "\t", index = False)
     # .res2d = Atributo del objeto de enriquecimiento de gseapy para obtener la tabla de resultados.
     
-    dotplot(enr.res2d,   
+    dotplot(table,   
             column = "Adjusted P-value", 
             title = output_name, 
             size=5,
-            top_term = 20,  # showCategory en R
+            top_term = 10,  # showCategory en R
             figsize=(3, 5),
             ofname= f"results/plot_{output_name}.png"
             )
