@@ -1,6 +1,7 @@
 # Análisis de RNA-seq con PyDESeq2 (Python) 
 **Autora:** Ana Elena Fernández Fernández, Cuarto curso del Grado en Bioquímica, Asignatura de Bioinformática y Análisis Genómico  
 **Lenguaje elegido:** Python
+**Enlace al repositorio de GitHub del proyecto:** https://github.com/anaelenaff/Tarea02_python.git
 
 ## Estructura del proyecto
 
