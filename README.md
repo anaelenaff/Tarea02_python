@@ -30,7 +30,7 @@ Se creará así un entorno de conda que contendrá los paquetes necesarios para 
 - numpy 
 - matplotlib 
 - pydeseq2 
-- gseapy
+- gseapy  
 Además, el entorno incluye el paquete jupyterlab, puesto que el proyecto contiene un notebook de JupyterLab con el que se probaron los bloques de código por separado antes de lanzar el script.
 
 Para activar el entorno:
