@@ -291,7 +291,6 @@ run_summary = [
     "Proyecto: TCGA-BRCA",
     f"Fecha de ejecucion: {datetime.now()}",
     f"Version de Python: {sys.version}",
-    f"Entrada total de genes: {len(counts_df)}",
     f"Genes analizados: {dds.n_vars}",
     f"Muestras analizadas: {dds.n_obs}",
     f"Genes significativos (padj < {alpha}): {len(sig_df)}",
