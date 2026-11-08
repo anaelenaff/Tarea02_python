@@ -13,8 +13,7 @@ from pydeseq2.dds import DeseqDataSet
 from pydeseq2.ds import DeseqStats
 # Para la trazabilidad
 from importlib.metadata import version 
-import sys 
-from datetime import datetime
+from platform import python_version
 
 # Creación de las carpeta results y logs.
 tarea02_python = Path.cwd() # Devuelve el directorio de trabajo actual (Current Working Directory)
@@ -63,11 +62,11 @@ genes_to_keep = ((counts_df >= min_count).sum(axis=1)) >= min_samples
 # (counts_df >= min_count).sum(axis=1) suma los "True" de la matriz booleana anterior, que
 # será el número de muestras para cada gen que supera el número mínimo de lecturas.
 # Con >= min_samples restringimos que el número mínimo de muestras anterior.
-counts_df = counts_df.loc[genes_to_keep]
+counts_df_filtered = counts_df.loc[genes_to_keep]
 
 # pydeseq2 espera muestras en filas y genes en columnas, luego usamos la transposición.
 dds = DeseqDataSet(
-    counts = counts_df.T, 
+    counts = counts_df_filtered.T, 
     metadata = metadata,
     design = f"~ {condition_column} + {plate_column}",
 )
@@ -278,7 +277,7 @@ print("[8/8] Generando informes de trazabilidad...")
 packages = ["pydeseq2", "pandas", "numpy", "matplotlib", "gseapy"]
 versions = [f"{package}:{version(package)}" for package in packages] # Lista de f-strings
 
-session_info = [f"Version de Python: {sys.version}"]
+session_info = [f"Python version: {python_version()}"]
 session_info.extend(versions) # Añade cada uno de los elementos de versions a la lista session_info.
 
 Path("logs/sessionInfo.txt").write_text("\n".join(session_info)); 
@@ -287,23 +286,18 @@ Path("logs/sessionInfo.txt").write_text("\n".join(session_info));
 # ; para que no devuelva el número de caracteres escritos.
 
 run_summary = [
-    "RESUMEN DEL ANALISIS DE RNA-SEQ",
-    "Proyecto: TCGA-BRCA",
-    f"Fecha de ejecucion: {datetime.now()}",
-    f"Version de Python: {sys.version}",
-    f"Genes analizados: {dds.n_vars}",
-    f"Muestras analizadas: {dds.n_obs}",
-    f"Genes significativos (padj < {alpha}): {len(sig_df)}",
-    f"Genes DE (padj < {alpha} y |log2FC| > {lfc_threshold}): {len(de_df)}",
-    f"Genes sobreexpresados: {len(up_df)}",
-    f"Genes subexpresados: {len(down_df)}",
-    f"Condicion de interes: {condition_test}",
-    f"Condicion de referencia: {condition_ref}",
-    f"Columna de condicion: {condition_column}",
-    f"Columna de lote: {plate_column}",
-    f"Umbral de significacion: {alpha}",
-    f"Umbral absoluto de log2FC: {lfc_threshold}",
-    "Metodo: PyDESeq2",
+    "=== RNA-Seq ANALYSIS SUMMARY ===",
+    "Project: TCGA-BRCA",
+    f"Number of samples:{len(counts_df.columns)}",
+    f"Total genes input: {len(counts_df)}",
+    f"Filtered genes: {dds.n_vars}",
+    f"Significant genes (padj < {alpha}): {len(sig_df)}",
+    f"Differentially expressed genes (padj < {alpha} y |log2FC| > {lfc_threshold}): {len(de_df)}",
+    f"Up-regulated genes: {len(up_df)}",
+    f"Down-regulated genes: {len(down_df)}",
+    f"Condition of interest: {condition_test}",
+    f"Reference Condition: {condition_ref}",
+    "Method: PyDESeq2",
 ]
 
 Path("logs/run_summary.txt").write_text("\n".join(run_summary));
